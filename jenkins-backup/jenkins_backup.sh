@@ -7,11 +7,13 @@
 
 
 # Ensure script is run with root privileges
+#if [ "$EUID" -ne 0 ]; then
+#  echo "Please run this script as root or sudo privileges "
+#  exit 1
+#fi
 if [ "$EUID" -ne 0 ]; then
-  echo "Please run this script as root or sudo privileges "
-  exit 1
+  echo "Running as non-root (Jenkins user)"
 fi
-
 # Define variables
 JENKINS_HOME="$1"
 AWS_ACCESS_KEY_ID="$2"
