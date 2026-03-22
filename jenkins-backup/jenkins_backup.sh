@@ -2,18 +2,15 @@
 
 #---------------------------------------------#
 # Author: Venu
-# Shell script for Jenkins Backup 
+# Jenkins Backup Script (Root-only execution)
 #---------------------------------------------#
 
-
 # Ensure script is run with root privileges
-#if [ "$EUID" -ne 0 ]; then
-#  echo "Please run this script as root or sudo privileges "
-#  exit 1
-#fi
 if [ "$EUID" -ne 0 ]; then
-  echo "Running as non-root (Jenkins user)"
+  echo "Please run this script as root or sudo privileges "
+  exit 1
 fi
+
 # Define variables
 JENKINS_HOME="$1"
 AWS_ACCESS_KEY_ID="$2"
@@ -33,7 +30,7 @@ log_message() {
 
 # Function to upload backup tar to S3 bucket
 copyto_s3() {
-    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 cp ${FINAL_TAR_NAME} s3://venu-jenkins-backup/
+    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 cp ${FINAL_TAR_NAME} s3://wezvatech-jenkins-backup-9739110917/
     exitcode=$?
     if [ "$exitcode" != "1" ] && [ "$exitcode" != "0" ]; then
       exit $exitcode
